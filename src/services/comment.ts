@@ -3,7 +3,7 @@ import type { CommentType } from '../schemas/comment.schema';
 import type { MatchType } from '../schemas/match.schema';
 
 const getAllComments = (matchId: string): Promise<MatchType | null> =>
-  Match.findById(matchId, '+comments');
+  Match.findById(matchId, '+comments').populate('comments.playerId');
 
 const createComment = async (
   matchId: string,

@@ -11,9 +11,9 @@ const main = async (cb: () => void) => {
   try {
     await Promise.all([
       // Commentary.findOne(),
-      Match.findOne(),
       Player.findOne(),
       Team.findOne(),
+      Match.findOne(),
       Tournament.findOne(),
     ]);
   } catch (e) {
