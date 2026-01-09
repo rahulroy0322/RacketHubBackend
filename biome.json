@@ -1,0 +1,94 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": ["src/**/*", "package.json", "tsconfig.json", "biome.json"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "recommended": true
+      },
+      "performance": {
+        "recommended": true
+      },
+      "style": {
+        "recommended": true
+      },
+      "nursery": {
+        "recommended": true
+      },
+      "security": {
+        "recommended": true,
+        "noGlobalEval": "error"
+      },
+      "suspicious": {
+        "recommended": true,
+        "noArrayIndexKey": "error",
+        "noClassAssign": "error",
+        "noConfusingLabels": "error",
+        "noConsole": {
+          "options": {
+            "allow": ["error", "warn"]
+          },
+          "level": "error"
+        },
+        "noConstEnum": "error",
+        "noDoubleEquals": "error",
+        "noDuplicateAtImportRules": "error",
+        "noDuplicateCase": "error",
+        "noDuplicateElseIf": "error",
+        "noImplicitAnyLet": "error",
+        "noSuspiciousSemicolonInJsx": "error",
+        "noUnassignedVariables": "error",
+        "noUnknownAtRules": "off",
+        "noVar": "error",
+        "useAwait": "error"
+      },
+      "complexity": {
+        "recommended": true,
+        "useArrowFunction": "error",
+        "useIndexOf": "error"
+      },
+      "correctness": {
+        "noConstAssign": "error",
+        "noUnusedFunctionParameters": "error",
+        "noUnusedImports": "error",
+        "noUnusedLabels": "error",
+        "noUnusedVariables": "error"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "attributePosition": "multiline",
+      "jsxQuoteStyle": "single",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "es5"
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "recommended": true,
+        "useSortedAttributes": "on",
+        "useSortedProperties": "on"
+      }
+    }
+  }
+}
