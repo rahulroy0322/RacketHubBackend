@@ -8,13 +8,12 @@ const transformToArray = (str: string) =>
     .filter(Boolean);
 
 const envSchema = z.object({
-  PORT: z.number().optional().default(8000).describe('PORT to run on'),
+  PORT: z.coerce.number().optional().default(8000).describe('PORT to run on'),
   ENV: z
     .enum(ENV_CONSTS)
     .optional()
     .default('dev')
     .describe('which env running?'),
-  // GOOGLE_API_KEY: z.string(),
   MONGO_URI: z.url(),
   FRONEND_URLS: z
     .string()
