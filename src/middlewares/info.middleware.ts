@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express';
 
-import logger from '../../src/logger/pino';
+import logger from '../logger/pino';
 
 const requestInfoMiddleware: RequestHandler = (req, res, next) => {
   const start = Date.now();
