@@ -11,6 +11,12 @@ const getAllTournaments = (): Promise<TournamentType[]> =>
     },
   });
 
+const createTournament = (
+  tournament: TournamentType
+): Promise<TournamentType | null> =>
+  // @ts-expect-error
+  Tournament.create(tournament);
+
 const getTeamsTournamentById = async (
   id: string
 ): Promise<TournamentType | null> =>
@@ -23,4 +29,4 @@ const getTeamsTournamentById = async (
     })
   )?.toJSON() as unknown as TournamentType | null;
 
-export { getAllTournaments, getTeamsTournamentById };
+export { getAllTournaments, getTeamsTournamentById, createTournament };

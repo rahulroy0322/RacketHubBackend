@@ -7,6 +7,9 @@ const PlayerSchema = new Schema<PlayerType>(
       type: String,
       required: true,
     },
+    location: {
+      type: String,
+    },
   },
   {
     timestamps: true,

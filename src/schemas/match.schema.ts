@@ -8,7 +8,7 @@ const matchSchema = z.object({
   teamBId: z.string(),
   scoreA: z.number().default(0),
   scoreB: z.number().default(0),
-  time: z.string(),
+  time: z.iso.time(),
   status: z.enum(matchStatus),
   location: z.string().min(5).optional(),
   description: z.string().optional(),
@@ -16,8 +16,22 @@ const matchSchema = z.object({
   comments: z.array(commentSchema).default([]),
 });
 
+const matchUpdateSchema = matchSchema
+  .pick({
+    teamAId: true,
+    teamBId: true,
+    scoreA: true,
+    scoreB: true,
+    time: true,
+    status: true,
+    location: true,
+    description: true,
+    name: true,
+  })
+  .partial();
+
 type MatchType = z.infer<typeof matchSchema>;
 
 export type { MatchType };
 
-export { matchSchema };
+export { matchSchema, matchUpdateSchema };

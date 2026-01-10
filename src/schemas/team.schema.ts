@@ -1,5 +1,4 @@
 import z from 'zod';
-import { tournamentStatus } from '../constants/status.const';
 
 const teamSchema = z.object({
   name: z.string().min(3),
@@ -11,4 +10,4 @@ type TeamType = z.infer<typeof teamSchema>;
 
 export type { TeamType };
 
-export { tournamentStatus };
+export { teamSchema };
