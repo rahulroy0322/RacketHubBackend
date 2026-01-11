@@ -34,4 +34,13 @@ app.use('/api/v1', apiRouter);
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
+declare global {
+  // biome-ignore lint/suspicious/noRedeclare: my responsibilty
+  namespace Express {
+    interface Request {
+      userId?: string;
+    }
+  }
+}
+
 export default app;

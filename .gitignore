@@ -135,3 +135,4 @@ dist
 # output files
 lib
 bin
+pnpm-workspace.yaml
