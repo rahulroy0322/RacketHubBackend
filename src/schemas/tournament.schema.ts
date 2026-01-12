@@ -10,8 +10,10 @@ const tournamentSchema = z.object({
   teams: z.array(z.string()).min(2),
 });
 
+const tournamentUpdateSchema = tournamentSchema.partial();
+
 type TournamentType = z.infer<typeof tournamentSchema>;
 
 export type { TournamentType };
 
-export { tournamentSchema };
+export { tournamentSchema, tournamentUpdateSchema };

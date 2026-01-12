@@ -15,6 +15,7 @@ const envSchema = z.object({
     .default('dev')
     .describe('which env running?'),
   MONGO_URI: z.url(),
+  JWT_SECRET: z.string().min(25),
   FRONEND_URLS: z
     .string()
     .refine((value) => {

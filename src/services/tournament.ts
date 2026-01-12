@@ -2,13 +2,17 @@ import type { TournamentStatusType } from '../constants/status.const';
 import { Tournament } from '../models/tournament.model';
 import type { TournamentType } from '../schemas/tournament.schema';
 
-const getAllTournaments = (): Promise<TournamentType[]> =>
+const getAllTournaments = (all = false): Promise<TournamentType[]> =>
   Tournament.find({
-    status: {
-      $not: {
-        $eq: 'completed' as TournamentStatusType,
-      },
-    },
+    ...(all
+      ? {}
+      : {
+          status: {
+            $not: {
+              $eq: 'completed' as TournamentStatusType,
+            },
+          },
+        }),
   });
 
 const createTournament = (
@@ -29,4 +33,33 @@ const getTeamsTournamentById = async (
     })
   )?.toJSON() as unknown as TournamentType | null;
 
-export { getAllTournaments, getTeamsTournamentById, createTournament };
+const updateTournamentById = (
+  id: string,
+  data: Partial<TournamentType>
+): Promise<TournamentType | null> =>
+  Tournament.findByIdAndUpdate(id, data, {
+    new: true,
+  }).populate({
+    path: 'teams',
+    populate: {
+      path: 'players',
+    },
+  });
+
+const destoryTournamentById = (id: string): Promise<TournamentType | null> =>
+  Tournament.findByIdAndDelete(id, {
+    new: true,
+  }).populate({
+    path: 'teams',
+    populate: {
+      path: 'players',
+    },
+  });
+
+export {
+  getAllTournaments,
+  getTeamsTournamentById,
+  createTournament,
+  updateTournamentById,
+  destoryTournamentById,
+};

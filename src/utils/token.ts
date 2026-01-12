@@ -1,11 +1,8 @@
 import jwt from 'jsonwebtoken';
+import { ENV } from '../config/env.config';
 
 type TokenType = {
   _id: string;
-};
-
-const ENV = {
-  JWT_SECRET: 'some super secret',
 };
 
 const signToken = (data: TokenType) =>

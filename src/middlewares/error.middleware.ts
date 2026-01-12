@@ -24,8 +24,9 @@ const errorMiddleware: ErrorRequestHandler = (e, _req, res, _next) => {
   res.status(status).json({
     success: false,
     error: {
-      ...e,
-    },
+      message: e.message,
+      name: e.name,
+    } satisfies Error,
   } satisfies ResType);
 };
 

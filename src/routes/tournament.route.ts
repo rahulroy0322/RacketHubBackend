@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import {
   createTournamentController,
+  destoryTournamentByIdController,
   getAllTournamentsController,
   getTournamentByIdController,
+  updateTournamentByIdController,
 } from '../controllers/tournaments.controller';
 
 const tournamentsRouter: Router = Router();
@@ -12,6 +14,10 @@ tournamentsRouter
   .get(getAllTournamentsController)
   .post(createTournamentController);
 
-tournamentsRouter.get('/:id', getTournamentByIdController);
+tournamentsRouter
+  .route('/:id')
+  .get(getTournamentByIdController)
+  .patch(updateTournamentByIdController)
+  .delete(destoryTournamentByIdController);
 
 export default tournamentsRouter;
