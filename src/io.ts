@@ -45,6 +45,7 @@ const handleMessage = (
     case 's:contact':
     case 's:court':
     case 's:flick':
+    case 'compleate':
       return brodCustToRoom(socket.roomId, event);
     default:
       logger.error(

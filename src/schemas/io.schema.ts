@@ -15,6 +15,7 @@ const eventSchema = z.object({
     's:contact',
     's:court',
     's:flick',
+    'compleate',
   ]),
   data: z.any().optional(),
 });
