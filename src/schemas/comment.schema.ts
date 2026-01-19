@@ -6,7 +6,12 @@ const commentSchema = z.object({
   timestamp: z.string().min(1, 'timestamp is required'),
   type: z.string().min(1, 'Type is required'),
   text: z.string().transform((v) => v || undefined),
-  playerId: z.string().transform((v) => v || undefined),
+  playerId: z
+    .string()
+    .optional()
+    .transform((v) => v || undefined),
+  scoreA: z.number(),
+  scoreB: z.number(),
 });
 
 type CommentType = z.infer<typeof commentSchema>;

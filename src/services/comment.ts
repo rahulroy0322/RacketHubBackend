@@ -15,32 +15,16 @@ const createComment = async (
     return null;
   }
 
-  const inc = {
-    scoreA: 0,
-    scoreB: 0,
-  };
-
-  if (data.type === 'p:fair') {
-    if (data.teamId === match.teamAId.toString()) {
-      inc.scoreA = 1;
-    } else {
-      inc.scoreB = 1;
-    }
-  } else {
-    if (data.teamId !== match.teamAId.toString()) {
-      inc.scoreA = 1;
-    } else {
-      inc.scoreB = 1;
-    }
-  }
+  const { scoreA, scoreB, ..._data } = data;
 
   return await Match.findByIdAndUpdate(
     matchId,
     {
       $push: {
-        comments: data,
+        comments: _data,
       },
-      $inc: inc,
+      scoreA,
+      scoreB,
     },
     {
       projection: '+comments',
