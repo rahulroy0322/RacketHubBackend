@@ -1,7 +1,7 @@
 import { model, Schema, Types } from 'mongoose';
-import type { TeamType } from '../schemas/team.schema';
+import type { _TeamType } from '../schemas/team.schema';
 
-const TeamSchema = new Schema<TeamType>(
+const TeamSchema = new Schema<_TeamType>(
   {
     name: {
       type: String,
@@ -22,6 +22,6 @@ const TeamSchema = new Schema<TeamType>(
   }
 );
 
-const Team = model<TeamType>('team', TeamSchema);
+const Team = model<_TeamType>('team', TeamSchema);
 
 export { Team };

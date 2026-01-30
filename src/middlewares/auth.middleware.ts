@@ -1,7 +1,7 @@
 import type { RequestHandler } from 'express';
 import { TokenExpiredError } from 'jsonwebtoken';
 import type { ResType } from '../@types/res';
-import type { RoleType } from '../constants/role.const';
+import type { RoleType } from '../const/role.const';
 import logger from '../logger/pino';
 import { getUserById } from '../services/auth';
 import { verifyToken } from '../utils/token';
@@ -31,7 +31,7 @@ const authRequired: RequestHandler = (req, res, next) => {
 
   try {
     const { _id } = verifyToken(token);
-    // TODO!
+    // TODO! check for baned
     req.userId = _id;
     return next();
   } catch (e) {
@@ -60,6 +60,8 @@ const roleRequired = (roles: RoleType[]) => {
     if (!req.userId) {
       throw new Error("some event dosn't handled properly!");
     }
+
+    // TODO! check cache!
     const user = await getUserById(req.userId);
 
     if (!user) {

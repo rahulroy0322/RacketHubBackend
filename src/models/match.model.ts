@@ -1,8 +1,9 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: schema only */
+/** biome-ignore-all lint/suspicious/noExplicitAny: trust me */
+
 import { model, Schema, Types } from 'mongoose';
-import type { MatchStatusType } from '../constants/status.const';
+import type { MatchStatusType } from '../const/status.const';
 import type { CommentType } from '../schemas/comment.schema';
-import type { MatchType } from '../schemas/match.schema';
+import type { _MatchType } from '../schemas/match.schema';
 
 const CommentSchema = new Schema<CommentType>(
   {
@@ -18,7 +19,7 @@ const CommentSchema = new Schema<CommentType>(
       type: Types.ObjectId,
       ref: 'team',
       required: true,
-    } as any,
+    },
     timestamp: {
       type: String,
       required: true,
@@ -28,7 +29,7 @@ const CommentSchema = new Schema<CommentType>(
       type: Types.ObjectId,
       ref: 'player',
       required: false,
-    } as any,
+    },
     text: {
       type: String,
     },
@@ -39,7 +40,7 @@ const CommentSchema = new Schema<CommentType>(
   }
 );
 
-const MatchSchema = new Schema<MatchType>(
+const MatchSchema = new Schema<_MatchType>(
   {
     name: {
       type: String,
@@ -86,12 +87,16 @@ const MatchSchema = new Schema<MatchType>(
       default: [],
       select: false,
     },
+    maxPoints: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const Match = model<MatchType>('match', MatchSchema);
+const Match = model<_MatchType>('match', MatchSchema);
 
 export { Match };

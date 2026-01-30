@@ -1,5 +1,6 @@
 import z from 'zod';
-import { userRoles } from '../constants/role.const';
+import type { Prettify } from '../@types/utils';
+import { userRoles } from '../const/role.const';
 
 const passwordSchema = z
   .string('Password must be a string')
@@ -26,8 +27,14 @@ const loginSchema = userSchema.pick({
   password: true,
 });
 
-type UserType = z.infer<typeof userSchema>;
+type _UserType = z.infer<typeof userSchema>;
 
-export type { UserType };
+type UserType = Prettify<
+  {
+    _id: string;
+  } & Omit<_UserType, 'password'>
+>;
+
+export type { _UserType, UserType };
 
 export { registerSchema, loginSchema };

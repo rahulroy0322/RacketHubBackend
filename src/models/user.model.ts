@@ -1,8 +1,8 @@
 import { model, Schema } from 'mongoose';
-import type { RoleType } from '../constants/role.const';
-import type { UserType } from '../schemas/auth.schema';
+import type { RoleType } from '../../src/const/role.const';
+import type { _UserType } from '../../src/schemas/auth.schema';
 
-const UserSchema = new Schema<UserType>(
+const UserSchema = new Schema<_UserType>(
   {
     name: {
       type: String,
@@ -29,6 +29,6 @@ const UserSchema = new Schema<UserType>(
   }
 );
 
-const User = model<UserType>('auth', UserSchema);
+const User = model<_UserType>('auth', UserSchema);
 
 export { User };

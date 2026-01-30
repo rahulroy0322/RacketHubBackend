@@ -1,5 +1,6 @@
 import z from 'zod';
-import { tournamentStatus } from '../constants/status.const';
+import type { Prettify } from '../@types/utils';
+import { tournamentStatus } from '../const/status.const';
 
 const tournamentSchema = z.object({
   name: z.string().min(3),
@@ -12,8 +13,14 @@ const tournamentSchema = z.object({
 
 const tournamentUpdateSchema = tournamentSchema.partial();
 
-type TournamentType = z.infer<typeof tournamentSchema>;
+type _TournamentType = z.infer<typeof tournamentSchema>;
 
-export type { TournamentType };
+type TournamentType = Prettify<
+  {
+    _id: string;
+  } & _TournamentType
+>;
+
+export type { _TournamentType, TournamentType };
 
 export { tournamentSchema, tournamentUpdateSchema };

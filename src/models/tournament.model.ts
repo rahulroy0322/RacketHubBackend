@@ -1,11 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
-import type { TournamentStatusType } from '../constants/status.const';
-import type { TeamType } from '../schemas/team.schema';
-import type { TournamentType } from '../schemas/tournament.schema';
-
-type _TournamentType = TournamentType & {
-  teams: TeamType[];
-};
+import type { TournamentStatusType } from '../const/status.const';
+import type { _TournamentType } from '../schemas/tournament.schema';
 
 const TournamentSchema = new Schema<_TournamentType>(
   {

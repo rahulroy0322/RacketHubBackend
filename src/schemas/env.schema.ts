@@ -1,5 +1,5 @@
 import z from 'zod';
-import { ENV_CONSTS } from '../constants/env.constants';
+import { ENV_CONSTS } from '../const/env.const';
 
 const transformToArray = (str: string) =>
   str
@@ -15,8 +15,9 @@ const envSchema = z.object({
     .default('dev')
     .describe('which env running?'),
   MONGO_URI: z.url(),
+  REDIS_URI: z.string(),
   JWT_SECRET: z.string().min(25),
-  FRONEND_URLS: z
+  FRONTEND_URLS: z
     .string()
     .refine((value) => {
       const urlArray = transformToArray(value);

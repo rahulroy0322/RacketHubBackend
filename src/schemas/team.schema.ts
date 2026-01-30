@@ -1,4 +1,5 @@
 import z from 'zod';
+import type { Prettify } from '../@types/utils';
 
 const teamSchema = z.object({
   name: z.string().min(3),
@@ -6,8 +7,14 @@ const teamSchema = z.object({
   location: z.string().transform((v) => v || undefined),
 });
 
-type TeamType = z.infer<typeof teamSchema>;
+type _TeamType = z.infer<typeof teamSchema>;
 
-export type { TeamType };
+type TeamType = Prettify<
+  {
+    _id: string;
+  } & _TeamType
+>;
+
+export type { _TeamType, TeamType };
 
 export { teamSchema };

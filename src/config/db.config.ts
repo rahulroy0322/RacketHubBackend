@@ -1,34 +1,33 @@
 import mongoose from 'mongoose';
+import type { ServerType } from '../@types/worker';
 import logger from '../logger/pino';
-// import { Commentary } from '../models/comentary.model'
 import { Match } from '../models/match.model';
 import { Player } from '../models/player.model';
 import { Team } from '../models/team.model';
 import { Tournament } from '../models/tournament.model';
 import ENV from './env.config';
 
-const main = async (cb: () => void) => {
+const main = async (type: ServerType, cb: () => void) => {
   try {
     await Promise.all([
-      // Commentary.findOne(),
       Player.findOne(),
       Team.findOne(),
       Match.findOne(),
       Tournament.findOne(),
     ]);
   } catch (e) {
-    logger.error(e, 'Db Init ERROR');
+    logger.error(e, `${type} Db Init ERROR`);
     cb();
   }
 };
 
-const connectDb = async (close = () => {}) => {
+const connectDb = async (type: ServerType, close = () => {}) => {
   try {
     await mongoose.connect(ENV.MONGO_URI);
-    logger.info('db conected');
-    await main(close);
+    logger.debug(`${type} db conected`);
+    await main(type, close);
   } catch (e) {
-    logger.error(e, 'ERROR DB CONNECT: ');
+    logger.fatal(e, `${type} ERROR DB CONNECT: `);
     close();
   }
 };

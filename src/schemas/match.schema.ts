@@ -1,5 +1,6 @@
 import z from 'zod';
-import { matchStatus } from '../constants/status.const';
+import type { Prettify } from '../@types/utils';
+import { matchStatus } from '../const/status.const';
 import { commentSchema } from './comment.schema';
 
 const matchSchema = z.object({
@@ -14,6 +15,7 @@ const matchSchema = z.object({
     .string()
     .min(5)
     .transform((v) => v || undefined),
+  maxPoints: z.number().default(0),
   description: z.string().transform((v) => v || undefined),
   name: z.string().transform((v) => v || undefined),
   comments: z.array(commentSchema).default([]),
@@ -33,8 +35,19 @@ const matchUpdateSchema = matchSchema
   })
   .partial();
 
-type MatchType = z.infer<typeof matchSchema>;
+const matchStartSchema = z.object({
+  maxPoints: z.number().min(3),
+  data: commentSchema,
+});
 
-export type { MatchType };
+type _MatchType = z.infer<typeof matchSchema>;
 
-export { matchSchema, matchUpdateSchema };
+type MatchType = Prettify<
+  {
+    _id: string;
+  } & _MatchType
+>;
+
+export type { _MatchType, MatchType };
+
+export { matchSchema, matchUpdateSchema, matchStartSchema };
