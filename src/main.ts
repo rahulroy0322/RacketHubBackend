@@ -1,13 +1,41 @@
-import cluster from 'node:cluster';
-import type { ServerType } from './@types/worker';
+import mongoose from 'mongoose';
+import { closeCache, connectCache } from './cache/main';
+import { connectDb } from './config/db.config';
+import { isDev, PORT } from './config/env.config';
+import { SHUTDOWN } from './const/msg.const';
+import http from './http';
+import logger from './logger/pino';
 
-if (cluster.isPrimary) {
-  import('./main/main');
-} else {
-  const type = process.env.type as ServerType;
-  if (type === 'ADMIN') {
-    import('./admin/main');
-  } else {
-    import('./server/main');
+const close = async () => {
+  if (!server.listening || isDev) {
+    process.exit(0);
   }
-}
+
+  await Promise.all([
+    server.closeIdleConnections(),
+    server.closeAllConnections(),
+    mongoose.connection.close(),
+    closeCache(),
+  ]);
+  server.close((err) => {
+    if (err) {
+      logger.error(err, 'ERROR! in server close');
+      process.exit(1);
+    }
+    process.exit(0);
+  });
+};
+
+const server = http.listen(PORT, () => {
+  logger.debug(`SERVER app is running on port : ${PORT}`);
+  connectDb(close);
+  connectCache();
+});
+
+process.on('message', (msg) => {
+  if (msg === SHUTDOWN) {
+    close();
+  }
+});
+
+process.once('SIGINT', close).once('SIGTERM', close);

@@ -1,10 +1,10 @@
 import type { RequestHandler } from 'express';
-import type { ResType } from '../../@types/res';
+import type { ResType } from '../@types/res';
 import {
   matchSchema,
   matchStartSchema,
   matchUpdateSchema,
-} from '../../schemas/match.schema';
+} from '../schemas/match.schema';
 import {
   createMatch,
   getAllMatchs,

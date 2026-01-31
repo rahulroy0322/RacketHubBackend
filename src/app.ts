@@ -1,9 +1,10 @@
 import cors from 'cors';
 import express, { type Express, json, urlencoded } from 'express';
-import ENV from '../config/env.config';
-import { errorMiddleware } from '../middlewares/error.middleware';
-import { requestInfoMiddleware } from '../middlewares/info.middleware';
-import { notFoundMiddleware } from '../middlewares/not-found.middleware';
+import type { ContextType } from './@types/context';
+import ENV from './config/env.config';
+import { errorMiddleware } from './middlewares/error.middleware';
+import { requestInfoMiddleware } from './middlewares/info.middleware';
+import { notFoundMiddleware } from './middlewares/not-found.middleware';
 import apiRouter from './routes';
 
 const app: Express = express();
@@ -35,6 +36,7 @@ declare global {
   namespace Express {
     interface Request {
       userId?: string;
+      context: ContextType;
     }
   }
 }

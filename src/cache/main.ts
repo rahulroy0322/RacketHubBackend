@@ -1,11 +1,10 @@
 import Redis from 'ioredis';
-import type { ServerType } from '../@types/worker';
 import { ENV } from '../config/env.config';
 import logger from '../logger/pino';
 
 let redis: Redis | null = null;
 
-const connectCache = (type: ServerType) => {
+const connectCache = () => {
   if (redis) {
     return redis;
   }
@@ -15,20 +14,20 @@ const connectCache = (type: ServerType) => {
   });
 
   redis.on('error', (err) => {
-    logger.error(err, `${type} ERROR CACAHE CONNECT: `);
+    logger.error(err, `ERROR CACAHE CONNECT: `);
     redis = null;
   });
 
   redis.on('connect', () => {
-    logger.debug(`${type} cache conected`);
+    logger.debug(`cache conected`);
   });
 
   redis.on('connecting', () => {
-    logger.debug(`${type} cache connecting...`);
+    logger.debug(`cache connecting...`);
   });
 
   redis.on('ready', () => {
-    logger.debug(`${type} cache is now ready...`);
+    logger.debug(`cache is now ready...`);
   });
 
   return redis;

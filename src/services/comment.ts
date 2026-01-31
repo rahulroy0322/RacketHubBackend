@@ -1,7 +1,7 @@
-import type { MatchStatusType } from '../../const/status.const';
-import { Match } from '../../models/match.model';
-import type { CommentType } from '../../schemas/comment.schema';
-import type { MatchType } from '../../schemas/match.schema';
+import type { MatchStatusType } from '../const/status.const';
+import { Match } from '../models/match.model';
+import type { CommentType } from '../schemas/comment.schema';
+import type { MatchType } from '../schemas/match.schema';
 
 const getAllComments = (matchId: string): Promise<MatchType | null> =>
   Match.findById(matchId, '+comments').populate(

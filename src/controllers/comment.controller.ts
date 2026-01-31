@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express';
-import type { ResType } from '../../@types/res';
-import { commentSchema } from '../../schemas/comment.schema';
+import type { ResType } from '../@types/res';
+import { commentSchema } from '../schemas/comment.schema';
 import { createComment, getAllComments } from '../services/comment';
 
 const getAllCommentsByMatchIdController: RequestHandler<{

@@ -1,9 +1,9 @@
-import type { TournamentStatusType } from '../../const/status.const';
-import { Tournament } from '../../models/tournament.model';
+import type { TournamentStatusType } from '../const/status.const';
+import { Tournament } from '../models/tournament.model';
 import type {
   _TournamentType,
   TournamentType,
-} from '../../schemas/tournament.schema';
+} from '../schemas/tournament.schema';
 
 const getAllTournaments = (all = false): Promise<TournamentType[]> =>
   Tournament.find({

@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { authRequired, roleRequired } from '../../middlewares/auth.middleware';
 import {
   getAllCountsController,
   // getAllMatchsController,
 } from '../controllers/admin.controller';
+import { authRequired, roleRequired } from '../middlewares/auth.middleware';
 
 const adminRouter: Router = Router();
 

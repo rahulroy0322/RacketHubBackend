@@ -1,7 +1,7 @@
-import { Match } from '../../models/match.model';
-import { Player } from '../../models/player.model';
-import { Team } from '../../models/team.model';
-import { Tournament } from '../../models/tournament.model';
+import { Match } from '../models/match.model';
+import { Player } from '../models/player.model';
+import { Team } from '../models/team.model';
+import { Tournament } from '../models/tournament.model';
 
 const getAllCounts = () => {
   return Promise.all([

@@ -8,9 +8,8 @@
     "check": "biome check",
     "check:fix": "biome check --write",
     "dev": "ENV=dev tsx --watch src/main.ts",
-    "dev:server": "ENV=dev tsx --watch src/server/main.ts",
-    "dev:admin": "ENV=dev tsx --watch src/admin/main.ts",
-    "start": "ENV=prod node dist/main.js"
+    "dev:cluster": "ENV=dev tsx --watch src/cluster.ts",
+    "start": "ENV=prod node dist/cluster.js"
   },
   "keywords": [],
   "author": "Rahul Roy",

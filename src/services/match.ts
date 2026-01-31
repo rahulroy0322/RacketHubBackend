@@ -1,6 +1,6 @@
-import type { MatchStatusType } from '../../const/status.const';
-import { Match } from '../../models/match.model';
-import type { _MatchType, MatchType } from '../../schemas/match.schema';
+import type { MatchStatusType } from '../const/status.const';
+import { Match } from '../models/match.model';
+import type { _MatchType, MatchType } from '../schemas/match.schema';
 
 const getAllMatchs = (
   tournamentId: string | undefined = undefined

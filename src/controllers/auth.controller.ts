@@ -1,14 +1,14 @@
 import type { RequestHandler } from 'express';
-import type { ResType } from '../../@types/res';
-import { BadError, ServerError } from '../../error/app.error';
+import type { ResType } from '../@types/res';
+import { BadError, ServerError } from '../error/app.error';
 import {
   type _UserType,
   loginSchema,
   registerSchema,
-} from '../../schemas/auth.schema';
-import { createUser, getUserByEmail, getUserById } from '../../services/auth';
-import { signToken } from '../../utils/token';
+} from '../schemas/auth.schema';
+import { createUser, getUserByEmail, getUserById } from '../services/auth';
 import { hashPassword, validPassword } from '../utils/hash';
+import { signToken } from '../utils/token';
 
 const getProfileController: RequestHandler = async (req, res) => {
   if (!req.userId) {

@@ -6,4 +6,4 @@ type ServerWithUrlType = {
   type: ServerType;
 };
 
-export type { ServerType, ServerWithUrlType };
+export type { ServerWithUrlType };

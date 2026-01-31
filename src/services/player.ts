@@ -1,5 +1,5 @@
-import { Player } from '../../models/player.model';
-import type { _PlayerType, PlayerType } from '../../schemas/player.schema';
+import { Player } from '../models/player.model';
+import type { _PlayerType, PlayerType } from '../schemas/player.schema';
 
 const getAllPlayers = (): Promise<PlayerType[]> => Player.find();
 

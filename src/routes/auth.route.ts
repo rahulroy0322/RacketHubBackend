@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { authRequired } from '../../middlewares/auth.middleware';
 import {
   getProfileController,
   loginController,
   registerController,
 } from '../controllers/auth.controller';
+import { authRequired } from '../middlewares/auth.middleware';
 
 const authRouter: Router = Router();
 

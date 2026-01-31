@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express';
-import type { ResType } from '../../@types/res';
-import { teamSchema } from '../../schemas/team.schema';
+import type { ResType } from '../@types/res';
+import { teamSchema } from '../schemas/team.schema';
 import { createTeam, getAllTeams } from '../services/team';
 
 // Todo! move to admin?

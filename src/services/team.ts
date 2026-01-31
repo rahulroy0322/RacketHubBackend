@@ -1,5 +1,5 @@
-import { Team } from '../../models/team.model';
-import type { _TeamType, TeamType } from '../../schemas/team.schema';
+import { Team } from '../models/team.model';
+import type { _TeamType, TeamType } from '../schemas/team.schema';
 
 const getAllTeams = (): Promise<TeamType[]> => Team.find();
 

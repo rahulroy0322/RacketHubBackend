@@ -1,3 +1,4 @@
+import pino from 'pino';
 import z from 'zod';
 import { ENV_CONSTS } from '../const/env.const';
 
@@ -8,6 +9,9 @@ const transformToArray = (str: string) =>
     .filter(Boolean);
 
 const envSchema = z.object({
+  LEBEL: z
+    .enum(Object.keys(pino.levels.values) as pino.LevelWithSilent[])
+    .default('debug'),
   PORT: z.coerce.number().optional().default(8000).describe('PORT to run on'),
   ENV: z
     .enum(ENV_CONSTS)

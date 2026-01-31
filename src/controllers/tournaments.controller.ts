@@ -1,9 +1,9 @@
 import type { RequestHandler } from 'express';
-import type { ResType } from '../../@types/res';
+import type { ResType } from '../@types/res';
 import {
   tournamentSchema,
   tournamentUpdateSchema,
-} from '../../schemas/tournament.schema';
+} from '../schemas/tournament.schema';
 import {
   createTournament,
   destoryTournamentById,

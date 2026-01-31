@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import adminRouter from './admin.route';
 import authRouter from './auth.route';
 import commentsRouter from './comment.route';
 import matchsRouter from './match.route';
@@ -8,6 +9,7 @@ import tournamentsRouter from './tournament.route';
 
 const apiRouter: Router = Router();
 
+apiRouter.use('/admin', adminRouter);
 apiRouter.use('/auth', authRouter);
 
 apiRouter.use('/tournaments', tournamentsRouter);
