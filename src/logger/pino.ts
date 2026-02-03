@@ -1,6 +1,7 @@
 import cluster from 'node:cluster';
 import pino from 'pino';
 import ENV, { isDev } from '../config/env.config';
+import { LOG_KEY } from '../const/logger.const';
 
 const level: pino.LevelWithSilentOrString = process.env.LEVEL
   ? ENV.LEBEL
@@ -10,25 +11,33 @@ const level: pino.LevelWithSilentOrString = process.env.LEVEL
 
 const targets: pino.TransportTargetOptions<Record<string, unknown>>[] = [];
 
-// TODO? only for render
-// if (isDev) {
-targets.push({
-  level,
-  target: 'pino-pretty',
-  options: {
-    colorize: true,
-    minimumLevel: level,
-  },
-});
-// }
+if (isDev) {
+  targets.push({
+    level,
+    target: 'pino-pretty',
+    options: {
+      colorize: true,
+      minimumLevel: level,
+    },
+  });
+}
+
+// TODO? for vps only
+// targets.push({
+//   level,
+//   target: 'pino/file',
+
+//   options: {
+//     mkdir: true,
+//     destination: `./logs/applog.log`,
+//   },
+// });
 
 targets.push({
   level,
-  target: 'pino/file',
-
+  target: './redis',
   options: {
-    mkdir: true,
-    destination: `./logs/applog.log`,
+    key: LOG_KEY,
   },
 });
 
@@ -45,6 +54,7 @@ const logger = pino({
     paths: ['password', 'passwd', 'pass'],
     censor: '[{HIDEN}]',
   },
+  timestamp: pino.stdTimeFunctions.isoTime,
 });
 
 const { trace, debug, info, warn, error, fatal } = logger;

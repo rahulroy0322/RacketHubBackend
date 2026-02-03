@@ -1,7 +1,7 @@
 import { isDev } from '../config/env.config';
 import type { UserType } from '../schemas/auth.schema';
 import { CACHE_KEYS } from './keys';
-import { getFromCache, setToCache } from './main';
+import { getFromCache, setToCache } from './listener';
 
 const cacheUser = (user: UserType) =>
   setToCache(

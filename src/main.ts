@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import { closeCache, connectCache } from './cache/main';
+import { closeCache } from './cache/listener';
+import { connectCache } from './cache/main';
 import { connectDb } from './config/db.config';
 import { isDev, PORT } from './config/env.config';
 import { SHUTDOWN } from './const/msg.const';

@@ -23,11 +23,11 @@ const formatZodError = (e: ZE) =>
 class AppError extends Error {
   override name = 'AppError';
   constructor(
-    public msg: string,
+    message: string,
     public status = 500,
     public meta: MetaType = {}
   ) {
-    super(msg);
+    super(message);
   }
 }
 
