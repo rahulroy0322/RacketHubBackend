@@ -75,6 +75,9 @@ const roleRequired = (roles: RoleType[]) => {
       res.status(403);
       throw new Error("You Don't Sufficient permition");
     }
+
+    req.user = user;
+
     next();
   }) satisfies RequestHandler;
 };

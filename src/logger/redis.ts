@@ -1,13 +1,16 @@
 import { levels } from 'pino';
 import build from 'pino-abstract-transport';
-import type { RedisErrorType, RedisLogType } from '../@types/logger';
+import type { _RedisLogType, RedisErrorType } from '../@types/logger';
 import { cacheLog } from '../cache/logger';
 import { connectCache } from '../cache/main';
 import { getPrevLogs, setPrevLogs } from '../cache/prevData';
 
 const { labels } = levels;
 
-type DataType = Pick<RedisLogType, 'appName' | 'msg' | 'processId' | 'time'> & {
+type DataType = Pick<
+  _RedisLogType,
+  'appName' | 'msg' | 'processId' | 'time'
+> & {
   level: keyof typeof labels;
   err?: RedisErrorType;
 };
@@ -38,9 +41,9 @@ const pinoRedis = ({ key }: { key: string }) => {
 
   return build((source) => {
     source.on('data', ({ err, level, ...obj }: DataType) => {
-      const data: RedisLogType = {
+      const data: _RedisLogType = {
         ...obj,
-        level: labels[level] as RedisLogType['level'],
+        level: labels[level] as _RedisLogType['level'],
       };
 
       if (err) {

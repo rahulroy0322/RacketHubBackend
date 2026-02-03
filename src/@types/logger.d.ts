@@ -1,3 +1,6 @@
+import type { ContextType } from './context';
+import type { Prettify } from './utils';
+
 type RedisErrorType = {
   type: string;
   message: string;
@@ -5,7 +8,7 @@ type RedisErrorType = {
   name: string;
 };
 
-type RedisLogType = {
+type _RedisLogType = {
   level: 'debug' | 'info' | 'warn' | 'error' | 'fatal';
   time: string;
   processId: number;
@@ -17,6 +20,13 @@ type RedisLogType = {
       [key: string]: unknown;
     };
   };
-};
+  // biome-ignore lint/complexity/noBannedTypes: type only
+} & (ContextType | {});
 
-export type { RedisErrorType, RedisLogType };
+type RedisLogType = Prettify<
+  {
+    _id: string;
+  } & _RedisLogType
+>;
+
+export type { RedisErrorType, _RedisLogType, RedisLogType };

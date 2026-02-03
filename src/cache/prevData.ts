@@ -1,8 +1,8 @@
-import type { RedisLogType } from '../@types/logger';
+import type { _RedisLogType } from '../@types/logger';
 
 type PrevLogsType = {
   key: string;
-  data: RedisLogType;
+  data: _RedisLogType;
 };
 
 let prevLogs: PrevLogsType[] = [];

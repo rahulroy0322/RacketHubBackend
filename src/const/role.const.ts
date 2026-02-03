@@ -1,4 +1,4 @@
-const userRoles = <const>['admin', 'super', 'user'];
+const userRoles = <const>['admin', 'super', 'user', 'modretor', 'tester'];
 
 type RoleType = (typeof userRoles)[number];
 

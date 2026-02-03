@@ -6,6 +6,7 @@ import { errorMiddleware } from './middlewares/error.middleware';
 import { requestInfoMiddleware } from './middlewares/info.middleware';
 import { notFoundMiddleware } from './middlewares/not-found.middleware';
 import apiRouter from './routes';
+import type { UserType } from './schemas/auth.schema';
 
 const app: Express = express();
 
@@ -37,6 +38,7 @@ declare global {
     interface Request {
       userId?: string;
       context: ContextType;
+      user: UserType;
     }
   }
 }

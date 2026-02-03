@@ -1,5 +1,8 @@
 // TODO!
-type TracesType = unknown;
+type TracesType = {
+  type: 'cache' | (string & {});
+  msg: 'cache hit in auth' | 'cache mis in auth' | (string & {});
+};
 
 type ContextType = {
   readonly reqId: string;
@@ -23,6 +26,9 @@ type ContextType = {
   resHeaders?: Record<string, unknown>;
   responseTime?: number;
   readonly traces: TracesType[];
+  readonly start: number;
+  end: number;
+  duration: number;
 };
 
 export type { ContextType };

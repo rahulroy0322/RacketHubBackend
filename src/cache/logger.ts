@@ -1,5 +1,5 @@
 import type Redis from 'ioredis';
-import type { RedisLogType } from '../@types/logger';
+import type { _RedisLogType } from '../@types/logger';
 import { LOG_KEY } from '../const/logger.const';
 import { CACHE_KEYS } from './keys';
 import { redis } from './main';
@@ -11,7 +11,7 @@ const cacheLog = async ({
   data,
 }: {
   key?: string;
-  data: RedisLogType;
+  data: _RedisLogType;
   redis: Redis;
 }) => {
   if (redis.status !== 'ready') {
@@ -37,7 +37,7 @@ const getLogsCache = async () => {
 
   const logs = await redis.lrange(CACHE_KEYS.log(LOG_KEY), 0, -1);
 
-  return logs.map((data) => JSON.parse(data) as RedisLogType);
+  return logs.map((data) => JSON.parse(data) as _RedisLogType);
 };
 
 export { cacheLog, getLogsCache };
