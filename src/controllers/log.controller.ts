@@ -1,16 +1,16 @@
 import type { RequestHandler } from 'express';
+import type { QueryFilter } from 'mongoose';
 import type { _RedisLogType } from '../@types/logger';
 import type { ResType } from '../@types/res';
+import { CACHE_KEYS } from '../cache/keys';
 import { getLogsCache } from '../cache/logger';
+import { redis } from '../cache/main';
+import { LOG_KEY } from '../const/logger.const';
 import type { RoleType } from '../const/role.const';
 import { ServerError } from '../error/app.error';
-import type { UserType } from '../schemas/auth.schema';
-import { redis } from '../cache/main';
-import { CACHE_KEYS } from '../cache/keys';
-import { LOG_KEY } from '../const/logger.const';
-import { createLogs, getLogs } from '../services/logger';
 import logger from '../logger/pino';
-import type { QueryFilter } from 'mongoose';
+import type { UserType } from '../schemas/auth.schema';
+import { createLogs, getLogs } from '../services/logger';
 
 /*
 by chatgpt
@@ -62,21 +62,17 @@ const getAllLogsController: RequestHandler = async (req, res) => {
     throw new ServerError();
   }
 
-  const filter: QueryFilter<_RedisLogType> = {}
+  const filter: QueryFilter<_RedisLogType> = {};
 
   const lebels = roleLebelMap[user.role];
 
   if (lebels) {
     filter.level = {
-      $in: lebels
-    }
+      $in: lebels,
+    };
   }
 
-  const logs = await Promise.all(
-    [getLogsByUserRole(user),
-    getLogs(filter)
-    ]
-  )
+  const logs = await Promise.all([getLogsByUserRole(user), getLogs(filter)]);
 
   res.status(200).json({
     success: true,
@@ -90,36 +86,23 @@ const getAllLogsController: RequestHandler = async (req, res) => {
   } satisfies ResType);
 };
 
-
-const batchSize = 50
+const batchSize = 50;
 
 // * render h*ck
 const moveToDb = async (loop = 0) => {
-  const key = CACHE_KEYS.log(
-    LOG_KEY
-  )
-  const logs = await redis.lrange(
-    key, batchSize * -1, -1
-  )
+  const key = CACHE_KEYS.log(LOG_KEY);
+  const logs = await redis.lrange(key, batchSize * -1, -1);
 
-  await createLogs(logs.map((log) => (
-    JSON.parse(log) as _RedisLogType
-  )))
+  await createLogs(logs.map((log) => JSON.parse(log) as _RedisLogType));
   //TODO! try to optomize
-  await Promise.all(
-    logs.map((log) =>
-      redis.lrem(
-        key, 0, log
-      )
-    )
-  )
+  await Promise.all(logs.map((log) => redis.lrem(key, 0, log)));
 
   if (loop <= 5) {
     if (logs.length >= batchSize) {
-      moveToDb()
+      moveToDb();
     }
   }
-}
+};
 
 const moveLogsToDbController: RequestHandler = async (req, res) => {
   res.status(202).json({
@@ -130,35 +113,12 @@ const moveLogsToDbController: RequestHandler = async (req, res) => {
   } satisfies ResType);
 
   try {
-    await moveToDb()
+    await moveToDb();
 
     // biome-ignore lint/suspicious/noConsole: just for dont want to in db
-    console.info('moving log to db complated!')
+    console.info('moving log to db complated!');
   } catch (err) {
-    logger.error(err, `Error moving log to db: ${req.context.reqId}`)
+    logger.error(err, `Error moving log to db: ${req.context.reqId}`);
   }
-
-
-  // console.log({
-  //   logs,
-  // });
-
-  // const user = req.user;
-  // if (!user) {
-  //   throw new ServerError();
-  // }
-
-  // const logs = await getLogsByUserRole(user);
-
-  // res.status(200).json({
-  //   success: true,
-  //   data: {
-  //     logs,
-  //     length: {
-  //       caches: logs.length,
-  //       // main: main.length,
-  //     },
-  //   },
-  // } satisfies ResType);
 };
 export { getAllLogsController, moveLogsToDbController };

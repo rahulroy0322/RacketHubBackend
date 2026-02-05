@@ -1,6 +1,11 @@
 import type { RequestHandler } from 'express';
 import type { ResType } from '../@types/res';
-import { BadError, ServerError } from '../error/app.error';
+import {
+  BadError,
+  ServerError,
+  UnAuthenticatedError,
+  ZodError,
+} from '../error/app.error';
 import {
   type _UserType,
   loginSchema,
@@ -12,13 +17,14 @@ import { signToken } from '../utils/token';
 
 const getProfileController: RequestHandler = async (req, res) => {
   if (!req.userId) {
-    throw new Error("some event dosn't handled properly!");
+    // TODO!
+    throw new ServerError("some event dosn't handled properly!");
   }
   const _user = await getUserById(req.userId);
 
   if (!_user) {
-    res.status(400);
-    throw new Error('your account had been deleted!');
+    // TODO!
+    throw new UnAuthenticatedError('your account had been deleted!');
   }
 
   const { _id, name, email, role } = _user;
@@ -40,11 +46,7 @@ const registerController: RequestHandler = async (req, res) => {
   const valid = registerSchema.safeParse(req.body);
 
   if (!valid.success) {
-    res.status(400).json({
-      success: false,
-      error: valid.error,
-    } satisfies ResType);
-    return;
+    throw new ZodError(valid.error);
   }
 
   const { data } = valid;
@@ -87,11 +89,7 @@ const loginController: RequestHandler = async (req, res) => {
   const valid = loginSchema.safeParse(req.body);
 
   if (!valid.success) {
-    res.status(400).json({
-      success: false,
-      error: valid.error,
-    } satisfies ResType);
-    return;
+    throw new ZodError(valid.error);
   }
 
   const { data } = valid;

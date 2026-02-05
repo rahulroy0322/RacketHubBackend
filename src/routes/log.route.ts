@@ -11,7 +11,8 @@ logsRouter
   .route('/')
   .get(
     // TODO! add user check
-    authRequired, roleRequired(['super', 'admin', 'modretor', 'tester']),
+    authRequired,
+    roleRequired(['super', 'admin', 'modretor', 'tester']),
     getAllLogsController
   )
   // ? Just for render

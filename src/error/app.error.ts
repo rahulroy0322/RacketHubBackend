@@ -78,6 +78,14 @@ class ForbidenError extends AppError {
   }
 }
 
+class NotFoundError extends AppError {
+  override name = 'ForbidenError';
+
+  constructor(msg = 'Resource Not Found', meta: unknown = {}) {
+    super(msg, 404, meta as MetaType);
+  }
+}
+
 //5**
 class ServerError extends AppError {
   override name = 'ServerError';
@@ -106,6 +114,7 @@ export {
   ExpiredError,
   UnAuthenticatedError,
   ForbidenError,
+  NotFoundError,
   // 5**
   ServerError,
   ServiceError,

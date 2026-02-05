@@ -1,12 +1,17 @@
 import type { RequestHandler } from 'express';
 import { TokenExpiredError } from 'jsonwebtoken';
-import type { ResType } from '../@types/res';
 import type { RoleType } from '../const/role.const';
-import logger from '../logger/pino';
+import {
+  BadError,
+  ExpiredError,
+  ForbidenError,
+  ServerError,
+  UnAuthenticatedError,
+} from '../error/app.error';
 import { getUserById } from '../services/auth';
 import { verifyToken } from '../utils/token';
 
-const authRequired: RequestHandler = (req, res, next) => {
+const authRequired: RequestHandler = (req, _res, next) => {
   const token = (
     req.headers.Authorization ||
     req.headers.authorization ||
@@ -20,13 +25,7 @@ const authRequired: RequestHandler = (req, res, next) => {
     .split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({
-      success: false,
-      error: {
-        name: 'Login Required',
-        message: 'You have to login first!',
-      },
-    } satisfies ResType);
+    throw new UnAuthenticatedError('You have to login first!');
   }
 
   try {
@@ -36,44 +35,36 @@ const authRequired: RequestHandler = (req, res, next) => {
     return next();
   } catch (e) {
     if (e instanceof TokenExpiredError) {
-      return res.status(401).json({
-        success: false,
-        error: {
-          name: 'Token Expired!',
-          message: 'your session had expired now you have to login again!',
-        },
-      } satisfies ResType);
+      throw new ExpiredError(
+        'your session had expired now you have to login again!'
+      );
     }
 
-    return res.status(400).json({
-      success: false,
-      error: {
-        name: 'Token Error',
-        message: 'failed To vaify token!',
-      },
-    } satisfies ResType);
+    throw new BadError('failed To vaify token!', e);
   }
 };
 
 const roleRequired = (roles: RoleType[]) => {
-  return (async (req, res, next) => {
+  return (async (req, _res, next) => {
     if (!req.userId) {
-      throw new Error("some event dosn't handled properly!");
+      throw new ServerError("some event dosn't handled properly!");
     }
 
     // TODO! check cache!
     const user = await getUserById(req.userId);
 
     if (!user) {
-      res.status(400);
-      logger.error({ user, userId: req.userId }, 'User Not found!');
+      // res.status(401);
+      // Todo!
+      // logger.error({ user, userId: req.userId }, 'User Not found!');
 
-      throw new Error('your account had been deleted!');
+      throw new UnAuthenticatedError('Your account had been deleted!');
     }
 
     if (!roles.includes(user.role)) {
-      res.status(403);
-      throw new Error("You Don't Sufficient permition");
+      // res.status(403);
+      // Todo!
+      throw new ForbidenError("You Don't Sufficient permition");
     }
 
     req.user = user;

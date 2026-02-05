@@ -1,32 +1,59 @@
 import type { ErrorRequestHandler } from 'express';
 import type { ResType } from '../@types/res';
 import { isDev } from '../config/env.config';
+import { AppError, type MetaType } from '../error/app.error';
 import logger from '../logger/pino';
 
-const errorMiddleware: ErrorRequestHandler = (e, _req, res, _next) => {
-  if (!isDev) {
-    logger.info(e, 'remove extra from error');
-    delete e.stack;
-  } else {
-    logger.error(e);
+const getError = (
+  e: unknown
+): {
+  name: string;
+  message: string;
+  stack?: string;
+  status: number;
+  meta?: MetaType;
+  extra?: unknown;
+} => {
+  if (e instanceof AppError) {
+    return {
+      name: e.name,
+      message: e.message,
+      stack: e.stack,
+      meta: e.meta,
+      status: e.status,
+    };
   }
 
-  let status = 500;
+  if (e instanceof Error) {
+    return {
+      name: e.name,
+      message: e.message,
+      stack: e.stack,
+      status: 500,
+    };
+  }
 
-  if (e.status) {
-    status = e.status;
-  } else {
-    if (res.statusCode !== 200) {
-      status = res.statusCode;
-    }
+  return {
+    name: 'Unknown Error',
+    message: 'Internal Server Error',
+    status: 500,
+    extra: e,
+  };
+};
+
+const errorMiddleware: ErrorRequestHandler = (e, _req, res, _next) => {
+  // TODO! remove extra for prod
+  const { status, ...error } = getError(e);
+  logger.error(error, 'Error happended!');
+  if (!isDev) {
+    delete error.stack;
+    delete error.meta;
+    delete error.extra;
   }
 
   res.status(status).json({
     success: false,
-    error: {
-      message: e.message,
-      name: e.name,
-    } satisfies Error,
+    error,
   } satisfies ResType);
 };
 
