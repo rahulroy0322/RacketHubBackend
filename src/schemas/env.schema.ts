@@ -20,6 +20,7 @@ const envSchema = z.object({
     .describe('which env running?'),
   MONGO_URI: z.url(),
   REDIS_URI: z.string(),
+  PUB_SUB: z.string(),
   JWT_SECRET: z.string().min(25),
   FRONTEND_URLS: z
     .string()

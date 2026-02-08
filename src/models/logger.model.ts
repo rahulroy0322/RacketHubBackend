@@ -1,13 +1,14 @@
+//? Romeving required for runtime validation
 import { model, Schema } from 'mongoose';
 import type { ContextType } from '../@types/context';
 import type { _RedisLogType } from '../@types/logger';
 
 const RedisErrorSchema = new Schema<_RedisLogType['err']>(
   {
-    type: { type: String, required: true },
-    message: { type: String, required: true },
+    type: { type: String },
+    message: { type: String },
     stack: { type: String },
-    name: { type: String, required: true },
+    name: { type: String },
     custom: { type: Schema.Types.Mixed, default: {} },
   },
   { _id: false }
@@ -15,8 +16,8 @@ const RedisErrorSchema = new Schema<_RedisLogType['err']>(
 
 const TracesSchema = new Schema<ContextType['traces'][number]>(
   {
-    type: { type: String, required: true, enum: ['cache'] },
-    msg: { type: String, required: true },
+    type: { type: String, enum: ['cache'] },
+    msg: { type: String },
   },
   { _id: false }
 );
@@ -25,13 +26,12 @@ const RedisLogSchema = new Schema<_RedisLogType>(
   {
     level: {
       type: String,
-      required: true,
       index: true,
     },
-    time: { type: String, required: true, index: true },
-    processId: { type: Number, required: true },
-    appName: { type: String, required: true },
-    msg: { type: String, required: true },
+    time: { type: String, index: true },
+    processId: { type: Number },
+    appName: { type: String },
+    msg: { type: String },
 
     path: { type: String },
     err: { type: RedisErrorSchema },

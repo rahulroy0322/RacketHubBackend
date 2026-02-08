@@ -94,12 +94,13 @@ const moveToDb = async (loop = 0) => {
   const logs = await redis.lrange(key, batchSize * -1, -1);
 
   await createLogs(logs.map((log) => JSON.parse(log) as _RedisLogType));
-  //TODO! try to optomize
+
+  // TODO! try to optomize
   await Promise.all(logs.map((log) => redis.lrem(key, 0, log)));
 
-  if (loop <= 5) {
+  if (loop <= 1) {
     if (logs.length >= batchSize) {
-      moveToDb();
+      await moveToDb(loop + 1);
     }
   }
 };

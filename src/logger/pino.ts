@@ -3,7 +3,7 @@ import pino from 'pino';
 import ENV, { isDev } from '../config/env.config';
 import { LOG_KEY } from '../const/logger.const';
 
-const level: pino.LevelWithSilentOrString = process.env.LEVEL
+const level: pino.LevelWithSilentOrString = process.env.LEBEL
   ? ENV.LEBEL
   : isDev
     ? 'trace'
