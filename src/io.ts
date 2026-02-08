@@ -37,7 +37,7 @@ io.on('connection', (socket: Socket) => {
         id: socket.id,
         data,
       },
-      'room join'
+      'New Message'
     );
 
     pubMsg(data as RedisCommentType);
