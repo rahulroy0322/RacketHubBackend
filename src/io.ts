@@ -2,8 +2,6 @@ import { Server, type Socket } from 'socket.io';
 import ENV from './config/env.config';
 import http from './http';
 import { logger } from './logger/pino';
-import { PUB_KEY } from './subscribe/const';
-import { pubMsg, type RedisCommentType, sub } from './subscribe/main';
 
 const io = new Server(http, {
   cors: {
@@ -37,10 +35,9 @@ io.on('connection', (socket: Socket) => {
         id: socket.id,
         data,
       },
-      'room join'
+      'New Message'
     );
-
-    pubMsg(data as RedisCommentType);
+    socket.to(data.matchId).emit('MSG', data);
   });
 
   socket.once('disconnect', () => {
@@ -51,34 +48,6 @@ io.on('connection', (socket: Socket) => {
       'disconnected'
     );
   });
-});
-
-sub.on('message', (channel, message) => {
-  if (channel === PUB_KEY) {
-    try {
-      const data = JSON.parse(message) as {
-        matchId: string;
-        type: string;
-        data: unknown;
-      };
-
-      if (data?.matchId) {
-        io.to(data.matchId).emit('MSG', data);
-      }
-    } catch (e) {
-      logger.error(e, 'ERROR: parsing msg in sub msg!');
-    }
-  }
-});
-
-sub.subscribe(PUB_KEY, (err, count) => {
-  if (err) {
-    logger.error(err, 'Error in sub');
-    return;
-  }
-  logger.info(
-    `Subscribed to ${count} channel. Listening for updates on the ${PUB_KEY} channel.`
-  );
 });
 
 export { io };

@@ -7,7 +7,6 @@ import { SHUTDOWN } from './const/msg.const';
 import http from './http';
 import { io } from './io';
 import logger from './logger/pino';
-import { closePubSub } from './subscribe/main';
 
 const close = async () => {
   if (!server.listening || isDev) {
@@ -19,7 +18,6 @@ const close = async () => {
     server.closeAllConnections(),
     mongoose.connection.close(),
     io.close(),
-    closePubSub(),
     closeCache(),
   ]);
   server.close((err) => {
