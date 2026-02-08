@@ -76,7 +76,7 @@ sub.subscribe(PUB_KEY, (err, count) => {
     logger.error(err, 'Error in sub');
     return;
   }
-  logger.info(
+  logger.debug(
     `Subscribed to ${count} channel. Listening for updates on the ${PUB_KEY} channel.`
   );
 });

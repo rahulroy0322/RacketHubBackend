@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, { type Express, json, urlencoded } from 'express';
 import type { ContextType } from './@types/context';
 import ENV from './config/env.config';
+import { healthController } from './controllers/health.controller';
 import { errorMiddleware } from './middlewares/error.middleware';
 import { requestInfoMiddleware } from './middlewares/info.middleware';
 import { notFoundMiddleware } from './middlewares/not-found.middleware';
@@ -21,6 +22,8 @@ app.use(
     extended: true,
   })
 );
+
+app.all('/health', healthController);
 
 // req-> info
 app.use(requestInfoMiddleware);
